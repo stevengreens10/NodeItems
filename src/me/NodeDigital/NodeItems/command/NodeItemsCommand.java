@@ -5,9 +5,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import me.NodeDigital.NodeItems.Variables;
+import me.NodeDigital.NodeItems.inventory.NodeItemsInventory;
 import me.NodeDigital.NodeItems.item.NodeItems;
-import net.md_5.bungee.api.ChatColor;
 
 public class NodeItemsCommand implements CommandExecutor{
 
@@ -26,7 +25,7 @@ public class NodeItemsCommand implements CommandExecutor{
 					player.getInventory().addItem(NodeItems.EXPLOSIVE_BOW);
 				}
 			}else {
-				player.sendMessage(Variables.PREFIX + ChatColor.AQUA + "Try /ni <jetpack|jetboots|explosivepick>");
+				player.openInventory(NodeItemsInventory.inventory);
 			}
 		}
 		
