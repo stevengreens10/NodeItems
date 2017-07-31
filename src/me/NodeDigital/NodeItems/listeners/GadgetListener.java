@@ -26,11 +26,11 @@ public class GadgetListener implements Listener{
 	public void onSneak(PlayerToggleSneakEvent e) {
 		Player p = e.getPlayer();
 		ItemStack chestplate = p.getInventory().getChestplate();
-		if(chestplate != null && e.isSneaking() && NodeItems.isItemSimilarTo(chestplate, NodeItems.JETPACK)) {
-			JetpackTask jetpackTask = new JetpackTask(p);
-			jetpackTask.setID(Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, jetpackTask, 0L, 3L));
-		}else {
-			
+		if(chestplate != null && e.isSneaking()) {
+			if(NodeItems.isItemSimilarTo(chestplate, NodeItems.JETPACK, false)) {
+				JetpackTask jetpackTask = new JetpackTask(p);
+				jetpackTask.setID(Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, jetpackTask, 0L, 3L));
+			}
 		}
 	}
 	
@@ -40,7 +40,7 @@ public class GadgetListener implements Listener{
 			Player p = e.getPlayer();
 			ItemStack boots = p.getInventory().getBoots();
 			
-			if(boots != null && NodeItems.isItemSimilarTo(boots, NodeItems.JETBOOTS)) {
+			if(boots != null && NodeItems.isItemSimilarTo(boots, NodeItems.JETBOOTS, false)) {
 				JetBootsTask task = new JetBootsTask(p);
 				task.setID(Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, task, 0L, 10L));
 			}

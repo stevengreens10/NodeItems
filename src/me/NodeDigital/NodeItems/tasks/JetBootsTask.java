@@ -23,7 +23,7 @@ public class JetBootsTask implements Runnable{
 	@Override
 	public void run() {
 		if(player.isSprinting()) {
-			player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20, 2));
+			player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20, 2), true);
 			player.getWorld().playSound(player.getLocation(), Sound.BLOCK_FIRE_EXTINGUISH, (float) 0.25, 5L);
 			player.getWorld().playEffect(player.getLocation(), Effect.SMOKE, 5);
 		}else {

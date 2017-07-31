@@ -3,8 +3,8 @@ package me.NodeDigital.NodeItems.listeners;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -26,18 +26,18 @@ public class ItemListener implements Listener{
 	}
 	
 	@EventHandler
-	public void onEntitySpawn(EntityShootBowEvent e) {
+	public void onBowShoot(EntityShootBowEvent e) {
 		Entity ent = e.getEntity();
 		if(ent instanceof Player) {
 			Player player = (Player) ent;
 			ItemStack bow = e.getBow();
-			if(bow != null && NodeItems.isItemSimilarTo(bow, NodeItems.EXPLOSIVE_BOW)) {
+			if(bow != null && NodeItems.isItemSimilarTo(bow, NodeItems.EXPLOSIVE_BOW, false)) {
 				ItemStack[] items = player.getInventory().getStorageContents();
 				
 				for(ItemStack item : items) {
 					if(item != null && item.getType() == Material.FIREBALL) {
 						item.setAmount(item.getAmount()-1);
-						Entity fireball = player.getWorld().spawnEntity(player.getLocation().add(player.getLocation().getDirection().multiply(1.5)), EntityType.FIREBALL);
+						Entity fireball = player.getWorld().spawnEntity(player.getLocation().add(player.getLocation().getDirection().multiply(3)), EntityType.FIREBALL);
 						fireball.setVelocity(player.getLocation().getDirection());
 						e.setCancelled(true);
 					}
@@ -53,40 +53,34 @@ public class ItemListener implements Listener{
 		ItemStack heldItem = player.getInventory().getItemInMainHand();
 		if(heldItem != null) {
 			
-			if(NodeItems.isItemSimilarTo(heldItem, NodeItems.EXPLOSIVE_PICK)) {
+			if(NodeItems.isItemSimilarTo(heldItem, NodeItems.EXPLOSIVE_PICK, false)) {
 				Material[] validMaterials = { Material.COBBLESTONE, Material.STONE, Material.IRON_ORE, Material.COAL_ORE,
 											Material.REDSTONE_ORE, Material.GOLD_ORE, Material.LAPIS_ORE, Material.EMERALD_ORE,
-											Material.QUARTZ_ORE, Material.NETHERRACK };
+											Material.QUARTZ_ORE, Material.NETHERRACK, Material.DIRT };
 				
 				boolean isValid = false;
 				for(Material mat : validMaterials) {
 					if(block.getType() == mat) {
 						isValid = true;
+						
 					}
 				}
 				
 				if(isValid) {
+					block.getWorld().createExplosion(block.getLocation(), 0f);
+					block.getWorld().playSound(block.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1F, 1F);
 					List<Block> blocks = new ArrayList<Block>();
 					
-					for(int xOff = -1; xOff <= 1; xOff++) {
-						for(int yOff = -1; yOff <= 1; yOff++) {
-							if(xOff == 0 && yOff == 0) {
-								continue;
-							}else {
+					for(int x = -1; x <= 1; x++) {
+						for(int y = -1; y <= 1; y++) {
+							for(int z = -1; z <= 1; z++) {
+								Block b = block.getRelative(x, y, z);
 								
-								Location loc;
-								String direction = getCardinalDirection(player);
-								if(direction.equalsIgnoreCase("N") || direction.equalsIgnoreCase("NE") || direction.equalsIgnoreCase("NW") || 
-								direction.equalsIgnoreCase("S") || direction.equalsIgnoreCase("SE") || direction.equalsIgnoreCase("SW")) {
-									
-									loc = block.getLocation().add(0, yOff, xOff);
-								}else {
-									loc = block.getLocation().add(xOff, yOff, 0);
-								}
-								Block b = loc.getBlock();
-								for(Material mat: validMaterials) {
+								for(Material mat : validMaterials) {
 									if(b.getType() == mat) {
-										blocks.add(b);
+										b.breakNaturally(heldItem);
+										
+
 									}
 								}
 							}
