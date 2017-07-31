@@ -10,6 +10,7 @@ public class NodeItems {
 	public static ItemStack JETPACK;
 	public static ItemStack JETBOOTS;
 	public static ItemStack EXPLOSIVE_PICK;
+	public static ItemStack EXPLOSIVE_BOW;
 
 	public static void constructItems() {
 		JETPACK = new ItemStack(Material.LEATHER_CHESTPLATE);
@@ -26,6 +27,13 @@ public class NodeItems {
 		meta = EXPLOSIVE_PICK.getItemMeta();
 		meta.setDisplayName(ChatColor.GOLD + "Explosive Pickaxe");
 		EXPLOSIVE_PICK.setItemMeta(meta);
+		
+		EXPLOSIVE_BOW = new ItemStack(Material.BOW);
+		meta = EXPLOSIVE_BOW.getItemMeta();
+		meta.setDisplayName(ChatColor.GOLD + "Explosive Bow");
+		EXPLOSIVE_BOW.setItemMeta(meta);
+		
+		
 	}
 
 	public static boolean isItemSimilarTo(ItemStack item1, ItemStack item2) {

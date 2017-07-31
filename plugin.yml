@@ -1,0 +1,5 @@
+name: NodeItems
+main: me.NodeDigital.NodeItems.NodeItemsMain
+version: 1.0
+commands:
+  ni:

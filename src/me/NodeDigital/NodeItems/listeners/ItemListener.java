@@ -6,10 +6,13 @@ import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.inventory.ItemStack;
 
 import me.NodeDigital.NodeItems.NodeItemsMain;
@@ -20,6 +23,27 @@ public class ItemListener implements Listener{
 	
 	public ItemListener(NodeItemsMain plugin) {
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
+	}
+	
+	@EventHandler
+	public void onEntitySpawn(EntityShootBowEvent e) {
+		Entity ent = e.getEntity();
+		if(ent instanceof Player) {
+			Player player = (Player) ent;
+			ItemStack bow = e.getBow();
+			if(bow != null && NodeItems.isItemSimilarTo(bow, NodeItems.EXPLOSIVE_BOW)) {
+				ItemStack[] items = player.getInventory().getStorageContents();
+				
+				for(ItemStack item : items) {
+					if(item != null && item.getType() == Material.FIREBALL) {
+						item.setAmount(item.getAmount()-1);
+						Entity fireball = player.getWorld().spawnEntity(player.getLocation().add(player.getLocation().getDirection().multiply(1.5)), EntityType.FIREBALL);
+						fireball.setVelocity(player.getLocation().getDirection());
+						e.setCancelled(true);
+					}
+				}
+			}
+		}
 	}
 	
 	@EventHandler

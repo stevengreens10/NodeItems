@@ -22,6 +22,8 @@ public class NodeItemsCommand implements CommandExecutor{
 					player.getInventory().addItem(NodeItems.JETBOOTS);
 				}else if(args[0].equalsIgnoreCase("explosivepick")) {
 					player.getInventory().addItem(NodeItems.EXPLOSIVE_PICK);
+				}else if(args[0].equalsIgnoreCase("explosivebow")) {
+					player.getInventory().addItem(NodeItems.EXPLOSIVE_BOW);
 				}
 			}else {
 				player.sendMessage(Variables.PREFIX + ChatColor.AQUA + "Try /ni <jetpack|jetboots|explosivepick>");
