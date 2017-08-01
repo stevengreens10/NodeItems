@@ -9,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import me.NodeDigital.NodeItems.command.NodeItemsCommand;
 import me.NodeDigital.NodeItems.inventory.NodeItemsInventory;
 import me.NodeDigital.NodeItems.item.NodeItems;
+import me.NodeDigital.NodeItems.listeners.BlockListener;
 import me.NodeDigital.NodeItems.listeners.GadgetListener;
 import me.NodeDigital.NodeItems.listeners.InventoryListener;
 import me.NodeDigital.NodeItems.listeners.ItemListener;
@@ -25,6 +26,7 @@ public class NodeItemsMain extends JavaPlugin{
 		new GadgetListener(this);
 		new InventoryListener(this);
 		new ItemListener(this);
+		new BlockListener(this);
 		
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new ArmorTasks(), 0L, 10L);
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new ItemTasks(), 0L, 10L);

@@ -17,6 +17,8 @@ public class NodeItems {
 	public static ItemStack INVISIBILITY_CLOAK;
 	public static ItemStack AUTO_BOW;
 	public static ItemStack BACKPACK;
+	public static ItemStack TESTBLOCK;
+	
 	public static List<ItemStack> items = new ArrayList<ItemStack>();
 
 	public static List<ItemStack> constructItems() {
@@ -87,13 +89,39 @@ public class NodeItems {
 		BACKPACK.setItemMeta(meta);
 		items.add(BACKPACK);
 		
+		TESTBLOCK = new ItemStack(Material.WORKBENCH);
+		meta = TESTBLOCK.getItemMeta();
+		meta.setDisplayName(ChatColor.YELLOW + "Test Block");
+		lore = new ArrayList<String>();
+		lore.add("Place it down somewhere and hope for the best.");
+		meta.setLore(lore);
+		TESTBLOCK.setItemMeta(meta);
+		items.add(TESTBLOCK);
+		
 		return items;
 		
 	}
 	
 	public static boolean isItemSimilarTo(ItemStack item1, ItemStack item2, boolean checkLore) {
-		return (item1.getType() == item2.getType()
-			&& item1.getItemMeta().getDisplayName().equalsIgnoreCase(item2.getItemMeta().getDisplayName())
-			&& (!checkLore || item1.getItemMeta().getLore().equals(item2.getItemMeta().getLore())));
+		if(item1 != null && item2 != null) {
+			if(item1.getType() == item2.getType()) {
+				if(item1.hasItemMeta() && item2.hasItemMeta()) {
+					if(item1.getItemMeta().getDisplayName().equals(item2.getItemMeta().getDisplayName())) {
+						if(!checkLore || item1.getItemMeta().hasLore() && item2.getItemMeta().hasLore()) {
+							if(!checkLore || item1.getItemMeta().getLore().equals(item2.getItemMeta().getLore())) {
+								return true;
+							}
+						}else {
+							return (item1.getItemMeta().hasLore() == false && item2.getItemMeta().hasLore() == false);
+						}
+					}
+				}else {
+					return (item1.hasItemMeta() == false && item2.hasItemMeta() == false);
+				}
+			}
+		}else {
+			return (item1 == null && item2 == null);
+		}
+		return false;
 	}
 }
