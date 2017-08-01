@@ -16,6 +16,7 @@ public class NodeItems {
 	public static ItemStack EXPLOSIVE_BOW;
 	public static ItemStack INVISIBILITY_CLOAK;
 	public static ItemStack AUTO_BOW;
+	public static ItemStack BACKPACK;
 	public static List<ItemStack> items = new ArrayList<ItemStack>();
 
 	public static List<ItemStack> constructItems() {
@@ -76,6 +77,15 @@ public class NodeItems {
 		meta.setLore(lore);
 		AUTO_BOW.setItemMeta(meta);
 		items.add(AUTO_BOW);
+		
+		BACKPACK = new ItemStack(Material.ENCHANTED_BOOK);
+		meta = BACKPACK.getItemMeta();
+		meta.setDisplayName(ChatColor.DARK_AQUA + "Backpack");
+		lore = new ArrayList<String>();
+		lore.add("ID: <ID>");
+		meta.setLore(lore);
+		BACKPACK.setItemMeta(meta);
+		items.add(BACKPACK);
 		
 		return items;
 		

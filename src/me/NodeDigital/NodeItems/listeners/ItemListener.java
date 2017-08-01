@@ -23,6 +23,8 @@ public class ItemListener implements Listener{
 	
 	public ItemListener(NodeItemsMain plugin) {
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
+		
+		new BackpackListener(plugin);
 	}
 	
 	@EventHandler
