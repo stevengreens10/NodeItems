@@ -19,7 +19,7 @@ public class InventoryListener implements Listener{
 	public void onInventoryClick(InventoryClickEvent e) {
 		Inventory clicked = e.getClickedInventory();
 		
-		if(clicked.getName().equalsIgnoreCase(NodeItemsInventory.inventory.getName())) {
+		if(clicked != null && clicked.getName().equalsIgnoreCase(NodeItemsInventory.inventory.getName())) {
 			int slot = e.getSlot();
 			
 			if(clicked.getItem(slot) != null) {

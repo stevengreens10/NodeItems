@@ -1,35 +1,32 @@
 package me.NodeDigital.NodeItems.item;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import me.NodeDigital.NodeItems.Config;
 import me.NodeDigital.NodeItems.Variables;
 
 
 public class Backpack {
-	private static Map<UUID, Integer> lastID = new HashMap<UUID, Integer>();
 
 	public static int generateID(Player p) {
-		UUID uuid = p.getUniqueId();
-		int id = 0;
-		if(lastID.containsKey(uuid)) {
-			id = lastID.get(uuid)+1;
-			lastID.put(uuid, id);
+		
+		Config config = new Config(Variables.FILEPATH + "storage/" + p.getUniqueId().toString()+".yml");
+		int numBackpacks;
+		if(config.getConfig().getConfigurationSection("backpacks").getKeys(false) != null) {
+			numBackpacks = config.getConfig().getConfigurationSection("backpacks").getKeys(false).size();
 		}else {
-			lastID.put(uuid, 0);
+			Bukkit.broadcastMessage("No backpacks");
+			numBackpacks = 0;
 		}
 		
-		return id;
+		Bukkit.broadcastMessage("" + numBackpacks);
+		
+		return numBackpacks;
 	}
 	
 	public static void openBackpack(Player p, ItemStack backpack) {
@@ -41,22 +38,16 @@ public class Backpack {
 	}
 	
 	public static Inventory getInventory(Player p, ItemStack backpack) {
-		//TODO
-		return null;
+		Config config = new Config(Variables.FILEPATH + "storage/" + p.getUniqueId().toString()+".yml");
+		return config.getInventory("backpacks." + Backpack.getID(backpack) + ".contents", 27, "Backpack");
 	}
 	
-	public static void saveBackpack(Player p, ItemStack backpack) {
+	public static void saveBackpack(Player p, ItemStack backpack, Inventory inventory) {
 		UUID uuid = p.getUniqueId();
-		File file = new File(Variables.FILEPATH + "storage/" + uuid.toString()+".yml");
-		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+		Config config = new Config(Variables.FILEPATH + "storage/" + uuid.toString()+".yml");
 		int ID = getID(backpack);
-		config.set("backpacks."+ID, "Test");
-		try {
-			config.save(file);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		//TODO
+		config.set("backpacks."+ID + ".contents", "");
+		config.setInventory("backpacks."+ID + ".contents", inventory);
 	}
 	
 	public static int getID(ItemStack backpack) {

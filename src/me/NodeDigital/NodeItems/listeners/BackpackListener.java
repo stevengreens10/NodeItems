@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -39,11 +40,21 @@ public class BackpackListener implements Listener{
 						heldItem.setItemMeta(backpackMeta);
 					}
 					
-					Backpack.saveBackpack(p, heldItem);
-					//TODO Open backpack
+					Backpack.openBackpack(p, heldItem);
 				}else {
 					p.sendMessage("You can not stack backpacks!");
 				}
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onInventoryClose(InventoryCloseEvent e) {
+		Player p = (Player) e.getPlayer();
+		if(e.getInventory().getName().equalsIgnoreCase("Backpack")) {
+			ItemStack backpack = p.getInventory().getItemInMainHand();
+			if(NodeItems.isItemSimilarTo(backpack, NodeItems.BACKPACK, false)) {
+				Backpack.saveBackpack(p, backpack, e.getInventory());
 			}
 		}
 	}
