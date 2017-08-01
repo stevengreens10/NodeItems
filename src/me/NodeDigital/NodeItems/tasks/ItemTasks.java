@@ -17,11 +17,14 @@ import me.NodeDigital.NodeItems.item.NodeItems;
 
 public class ItemTasks implements Runnable{
 
+	long iterations = 0;
+	
 	public void run() {
+		iterations++;
 		for(Player p : Bukkit.getOnlinePlayers()) {
 			ItemStack heldItem = p.getInventory().getItemInMainHand();
 			
-			if(heldItem != null && NodeItems.isItemSimilarTo(heldItem, NodeItems.AUTO_BOW, true)) {
+			if(!p.isDead() && heldItem != null && NodeItems.isItemSimilarTo(heldItem, NodeItems.AUTO_BOW, true) && iterations % 3 == 0) {
 				
 				double lowestDistance = 100000;
 				Entity closestEntity = null;
@@ -60,6 +63,7 @@ public class ItemTasks implements Runnable{
 							arrow.setVelocity(vector.multiply(0.5));
 							if(!heldItem.containsEnchantment(Enchantment.ARROW_INFINITE))
 								item.setAmount(item.getAmount()-1);
+							heldItem.setDurability((short) (heldItem.getDurability() - 2) );
 							break;
 						}
 					}
