@@ -1,12 +1,16 @@
 package me.NodeDigital.NodeItems.block;
 
+import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 
 public class NodeBlock {
 
 	private Block block;
 	private BlockType type;
 	private int ID;
+	private Inventory inventory = null;
 	
 	public NodeBlock(Block block, BlockType type, int ID) {
 		this.block = block;
@@ -24,6 +28,15 @@ public class NodeBlock {
 	
 	public int getID() {
 		return ID;
+	}
+	
+	public Inventory createInventory(InventoryHolder owner, int size, String name) {
+		inventory = Bukkit.createInventory(owner, size, name);
+		return inventory;
+	}
+	
+	public Inventory getInventory() {
+		return inventory;
 	}
 	
 }

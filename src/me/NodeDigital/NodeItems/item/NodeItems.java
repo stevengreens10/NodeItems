@@ -17,7 +17,7 @@ public class NodeItems {
 	public static ItemStack INVISIBILITY_CLOAK;
 	public static ItemStack AUTO_BOW;
 	public static ItemStack BACKPACK;
-	public static ItemStack TESTBLOCK;
+	public static ItemStack SECRET_CHEST;
 	
 	public static List<ItemStack> items = new ArrayList<ItemStack>();
 
@@ -89,14 +89,14 @@ public class NodeItems {
 		BACKPACK.setItemMeta(meta);
 		items.add(BACKPACK);
 		
-		TESTBLOCK = new ItemStack(Material.WORKBENCH);
-		meta = TESTBLOCK.getItemMeta();
-		meta.setDisplayName(ChatColor.YELLOW + "Test Block");
+		SECRET_CHEST = new ItemStack(Material.WORKBENCH);
+		meta = SECRET_CHEST.getItemMeta();
+		meta.setDisplayName(ChatColor.YELLOW + "Secret Chest");
 		lore = new ArrayList<String>();
-		lore.add("Place it down somewhere and hope for the best.");
+		lore.add("A cleverly hidden chest");
 		meta.setLore(lore);
-		TESTBLOCK.setItemMeta(meta);
-		items.add(TESTBLOCK);
+		SECRET_CHEST.setItemMeta(meta);
+		items.add(SECRET_CHEST);
 		
 		return items;
 		

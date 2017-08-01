@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import me.NodeDigital.NodeItems.block.BlockStorage;
 import me.NodeDigital.NodeItems.command.NodeItemsCommand;
 import me.NodeDigital.NodeItems.inventory.NodeItemsInventory;
 import me.NodeDigital.NodeItems.item.NodeItems;
@@ -21,6 +22,7 @@ public class NodeItemsMain extends JavaPlugin{
 		super.onEnable();
 		List<ItemStack> items = NodeItems.constructItems();
 		NodeItemsInventory.constructInventory(items);
+		BlockStorage.loadBlocks();
 		
 		getCommand("ni").setExecutor(new NodeItemsCommand());
 		new GadgetListener(this);

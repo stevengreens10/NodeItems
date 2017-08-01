@@ -9,14 +9,28 @@ import me.NodeDigital.NodeItems.Variables;
 
 public class BlockStorage {
 
+	public static List<NodeBlock> nodeBlocks;
+	
+	public static void loadBlocks() {
+		Config config = new Config(Variables.FILEPATH + "storage/blocks.yml");
+		nodeBlocks = config.getBlocks("blocks");
+	}
+	
 	public static void storeBlock(Block block, BlockType type) {
 		Config config = new Config(Variables.FILEPATH + "storage/blocks.yml");
-		config.setBlock("blocks", block, type, generateBlockID());
+		int ID = generateBlockID();
+		config.setBlock("blocks", block, type, ID);
+		nodeBlocks.add(new NodeBlock(block, type, ID));
 	}
 	
 	public static void removeBlock(NodeBlock nodeBlock) {
 		Config config = new Config(Variables.FILEPATH + "storage/blocks.yml");
 		config.removeBlock("blocks", nodeBlock);
+		for(NodeBlock block : nodeBlocks) {
+			if(block.getID() == nodeBlock.getID()) {
+				nodeBlocks.remove(block);
+			}
+		}
 	}
 	
 	private static int generateBlockID() {
@@ -42,9 +56,7 @@ public class BlockStorage {
 		return id;
 	}
 	
-	public static NodeBlock getNodeBlock(Block b) {
-		Config config = new Config(Variables.FILEPATH + "storage/blocks.yml");
-		List<NodeBlock> nodeBlocks = config.getBlocks("blocks");
+	public static NodeBlock getNodeBlock(Block b) {		
 		
 		for(NodeBlock nodeBlock : nodeBlocks) {
 			if(nodeBlock.getBlock().getLocation().equals(b.getLocation())) {

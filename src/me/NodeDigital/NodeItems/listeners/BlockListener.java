@@ -1,7 +1,7 @@
 package me.NodeDigital.NodeItems.listeners;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -31,8 +31,8 @@ public class BlockListener implements Listener{
 		ItemStack heldItem = player.getInventory().getItemInMainHand();
 		Block block = e.getBlock();
 		
-		if(heldItem != null && NodeItems.isItemSimilarTo(heldItem, NodeItems.TESTBLOCK, true)) {
-			BlockStorage.storeBlock(block, BlockType.TESTBLOCK);
+		if(heldItem != null && NodeItems.isItemSimilarTo(heldItem, NodeItems.SECRET_CHEST, true)) {
+			BlockStorage.storeBlock(block, BlockType.SECRET_CHEST);
 		}
 	}
 	
@@ -41,8 +41,8 @@ public class BlockListener implements Listener{
 		Block block = e.getBlock();
 		NodeBlock nodeBlock = BlockStorage.getNodeBlock(block);
 		if(nodeBlock != null) {
-			if(nodeBlock.getType() == BlockType.TESTBLOCK) {
-				block.getWorld().dropItemNaturally(block.getLocation(), NodeItems.TESTBLOCK);
+			if(nodeBlock.getType() == BlockType.SECRET_CHEST) {
+				block.getWorld().dropItemNaturally(block.getLocation(), NodeItems.SECRET_CHEST);
 				e.setCancelled(true);
 				block.setType(Material.AIR);
 				BlockStorage.removeBlock(nodeBlock);
@@ -58,9 +58,14 @@ public class BlockListener implements Listener{
 			NodeBlock nodeBlock = BlockStorage.getNodeBlock(block);
 			
 			if(nodeBlock != null) {
-				if(nodeBlock.getType() == BlockType.TESTBLOCK) {
+				if(nodeBlock.getType() == BlockType.SECRET_CHEST) {
 					e.setCancelled(true);
-					player.openInventory(Bukkit.createInventory(null, 27, ChatColor.GOLD + "Test Inventory"));
+					if(nodeBlock.getInventory() == null) {
+						player.openInventory(nodeBlock.createInventory(null, 27, ChatColor.GOLD + "Secret Chest"));
+					}else {
+						player.openInventory(nodeBlock.getInventory());
+					}
+					player.getWorld().playSound(player.getLocation(), Sound.BLOCK_CHEST_OPEN, 1F, 1F);
 				}
 			}
 		}
