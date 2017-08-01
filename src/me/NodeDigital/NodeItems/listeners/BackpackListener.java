@@ -37,9 +37,9 @@ public class BackpackListener implements Listener{
 						lore.add(backpackMeta.getLore().get(0).replaceFirst("<ID>", p.getUniqueId().toString()+"#"+id));
 						backpackMeta.setLore(lore);
 						heldItem.setItemMeta(backpackMeta);
-						p.sendMessage("ID = " + p.getUniqueId().toString()+"#"+id);
 					}
 					
+					Backpack.saveBackpack(p, heldItem);
 					//TODO Open backpack
 				}else {
 					p.sendMessage("You can not stack backpacks!");
