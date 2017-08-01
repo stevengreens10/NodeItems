@@ -16,13 +16,25 @@ public class Backpack {
 
 	public static int generateID(Player p) {
 		Config config = new Config(Variables.FILEPATH + "storage/" + p.getUniqueId().toString()+".yml");
-		int numBackpacks;
+		int id = 0;
 		if(config.getConfig().getConfigurationSection("backpacks") != null && config.getConfig().getConfigurationSection("backpacks").getKeys(false) != null) {
-			numBackpacks = config.getConfig().getConfigurationSection("backpacks").getKeys(false).size();
+			String [] IDs = config.getConfig().getConfigurationSection("backpacks").getKeys(false).toArray(new String[0]);
+			boolean foundID = false;
+			for(int i = 0; i < IDs.length; i++) {
+				int ID = Integer.parseInt(IDs[i]);
+				if(ID != i) {
+					id = i;
+					foundID = true;
+					break;
+				}
+			}
+			if(!foundID) {
+				id = IDs.length;
+			}
 		}else {
-			numBackpacks = 0;
+			id = 0;
 		}
-		return numBackpacks;
+		return id;
 	}
 	
 	public static void openBackpack(Player p, ItemStack backpack) {

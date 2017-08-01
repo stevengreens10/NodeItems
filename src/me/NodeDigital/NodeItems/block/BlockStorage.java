@@ -2,7 +2,6 @@ package me.NodeDigital.NodeItems.block;
 
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 
 import me.NodeDigital.NodeItems.Config;
@@ -22,13 +21,25 @@ public class BlockStorage {
 	
 	private static int generateBlockID() {
 		Config config = new Config(Variables.FILEPATH + "storage/blocks.yml");
-		int numBlocks;
+		int id = 0;
 		if(config.getConfig().getConfigurationSection("blocks") != null && config.getConfig().getConfigurationSection("blocks").getKeys(false) != null) {
-			numBlocks = config.getConfig().getConfigurationSection("blocks").getKeys(false).size();
+			String [] IDs = config.getConfig().getConfigurationSection("blocks").getKeys(false).toArray(new String[0]);
+			boolean foundID = false;
+			for(int i = 0; i < IDs.length; i++) {
+				int ID = Integer.parseInt(IDs[i]);
+				if(ID != i) {
+					id = i;
+					foundID = true;
+					break;
+				}
+			}
+			if(!foundID) {
+				id = IDs.length;
+			}
 		}else {
-			numBlocks = 0;
+			id = 0;
 		}
-		return numBlocks;
+		return id;
 	}
 	
 	public static NodeBlock getNodeBlock(Block b) {
