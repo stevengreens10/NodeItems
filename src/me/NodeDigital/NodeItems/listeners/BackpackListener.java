@@ -1,6 +1,5 @@
 package me.NodeDigital.NodeItems.listeners;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.entity.Player;
@@ -8,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -26,21 +26,24 @@ public class BackpackListener implements Listener{
 	public void onInteract(PlayerInteractEvent e) {
 		Player p = e.getPlayer();
 		if(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-			ItemStack heldItem = e.getPlayer().getInventory().getItemInMainHand();
+			ItemStack backpack = e.getPlayer().getInventory().getItemInMainHand();
 			
-			if(NodeItems.isItemSimilarTo(heldItem, NodeItems.BACKPACK, false)) {
-				if(heldItem.getAmount() == 1) {
-					ItemMeta backpackMeta = heldItem.getItemMeta();
-					if(backpackMeta.getLore().get(0).equalsIgnoreCase("ID: <ID>")) {
-						//TODO Set id for backpack
+			if(NodeItems.isItemSimilarTo(backpack, NodeItems.BACKPACK, false)) {
+				if(backpack.getAmount() == 1) {
+					ItemMeta backpackMeta = backpack.getItemMeta();
+					List<String> lore = backpackMeta.getLore();
+					if(lore.get(0).equalsIgnoreCase("ID: <ID>")) {
 						int id = Backpack.generateID(p);
-						List<String> lore = new ArrayList<String>();
-						lore.add(backpackMeta.getLore().get(0).replaceFirst("<ID>", p.getUniqueId().toString()+"#"+id));
+						lore.set(0, lore.get(0).replaceFirst("<ID>", p.getUniqueId().toString()+"#"+id));
 						backpackMeta.setLore(lore);
-						heldItem.setItemMeta(backpackMeta);
+						backpack.setItemMeta(backpackMeta);
 					}
 					
-					Backpack.openBackpack(p, heldItem);
+					if(lore.get(0).substring(4, lore.get(0).indexOf('#')).equalsIgnoreCase(p.getUniqueId().toString())) {
+						Backpack.openBackpack(p, backpack);
+					}else {
+						p.sendMessage("This is not your backpack!");
+					}
 				}else {
 					p.sendMessage("You can not stack backpacks!");
 				}
@@ -56,6 +59,16 @@ public class BackpackListener implements Listener{
 			if(NodeItems.isItemSimilarTo(backpack, NodeItems.BACKPACK, false)) {
 				Backpack.saveBackpack(p, backpack, e.getInventory());
 			}
+		}
+	}
+	
+	public void onDropItem(PlayerDropItemEvent e) {
+		Player p = e.getPlayer();
+		ItemStack backpack = p.getInventory().getItemInMainHand();
+		
+		if(NodeItems.isItemSimilarTo(backpack, NodeItems.BACKPACK, false)) {
+			e.setCancelled(true);
+			p.sendMessage("You can not drop backpacks!");
 		}
 	}
 	
