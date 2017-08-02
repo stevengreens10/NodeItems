@@ -121,14 +121,18 @@ public class Config {
 	public Inventory getInventory(String path) {
 		int size = config.getInt(path + ".size");
 		String title = config.getString(path + ".title");
-		Inventory inventory = Bukkit.createInventory(null, size, title);
-		for(int i = 0; i < size; i++) {
-			ItemStack item = getItem(path + ".contents." + i);
-			if(item != null) {
-				inventory.setItem(i, item);
+		if(title != null) {
+			Inventory inventory = Bukkit.createInventory(null, size, title);
+			for(int i = 0; i < size; i++) {
+				ItemStack item = getItem(path + ".contents." + i);
+				if(item != null) {
+					inventory.setItem(i, item);
+				}
 			}
+			return inventory;
+		}else {
+			return null;
 		}
-		return inventory;
 	}
 
 	public Inventory getInventory(String path, int size, String title) {

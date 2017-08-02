@@ -39,6 +39,10 @@ public class NodeBlock {
 		return inventory;
 	}
 	
+	public boolean hasInventory() {
+		return inventory != null;
+	}
+	
 	public void saveInventory() {
 		BlockStorage.saveInventory(ID, inventory);
 	}
