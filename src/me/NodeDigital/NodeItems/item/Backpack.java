@@ -46,7 +46,7 @@ public class Backpack {
 	
 	public static Inventory getInventory(Player p, ItemStack backpack) {
 		Config config = new Config(Variables.FILEPATH + "storage/" + p.getUniqueId().toString()+".yml");
-		return config.getInventory("backpacks." + Backpack.getID(backpack) + ".contents", 27, "Backpack");
+		return config.getInventory("backpacks." + Backpack.getID(backpack) + ".inventory", 27, "Backpack");
 	}
 	
 	public static void saveBackpack(Player p, ItemStack backpack, Inventory inventory) {
@@ -54,7 +54,7 @@ public class Backpack {
 		Config config = new Config(Variables.FILEPATH + "storage/" + uuid.toString()+".yml");
 		int ID = getID(backpack);
 		config.set("backpacks."+ID + ".contents", "");
-		config.setInventory("backpacks."+ID + ".contents", inventory);
+		config.setInventory("backpacks."+ID + ".inventory", inventory);
 	}
 	
 	public static int getID(ItemStack backpack) {

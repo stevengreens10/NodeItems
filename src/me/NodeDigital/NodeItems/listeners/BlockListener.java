@@ -42,6 +42,15 @@ public class BlockListener implements Listener{
 		NodeBlock nodeBlock = BlockStorage.getNodeBlock(block);
 		if(nodeBlock != null) {
 			if(nodeBlock.getType() == BlockType.SECRET_CHEST) {
+				ItemStack[] contents = nodeBlock.getInventory().getContents();
+				for(ItemStack item : contents) {
+					if(item != null) {
+						block.getWorld().dropItemNaturally(block.getLocation(), item);
+					}
+				}
+				
+				nodeBlock.setInventory(null);
+
 				block.getWorld().dropItemNaturally(block.getLocation(), NodeItems.SECRET_CHEST);
 				e.setCancelled(true);
 				block.setType(Material.AIR);
@@ -58,10 +67,10 @@ public class BlockListener implements Listener{
 			NodeBlock nodeBlock = BlockStorage.getNodeBlock(block);
 			
 			if(nodeBlock != null) {
-				if(nodeBlock.getType() == BlockType.SECRET_CHEST) {
+				if(nodeBlock.getType() == BlockType.SECRET_CHEST && e.getPlayer().isSneaking()) {
 					e.setCancelled(true);
 					if(nodeBlock.getInventory() == null) {
-						player.openInventory(nodeBlock.createInventory(null, 27, ChatColor.GOLD + "Secret Chest"));
+						player.openInventory(nodeBlock.createInventory(null, 27, ChatColor.GOLD + "Secret Chest #" + nodeBlock.getID() ));
 					}else {
 						player.openInventory(nodeBlock.getInventory());
 					}

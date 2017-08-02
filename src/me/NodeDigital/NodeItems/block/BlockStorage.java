@@ -3,6 +3,7 @@ package me.NodeDigital.NodeItems.block;
 import java.util.List;
 
 import org.bukkit.block.Block;
+import org.bukkit.inventory.Inventory;
 
 import me.NodeDigital.NodeItems.Config;
 import me.NodeDigital.NodeItems.Variables;
@@ -14,6 +15,23 @@ public class BlockStorage {
 	public static void loadBlocks() {
 		Config config = new Config(Variables.FILEPATH + "storage/blocks.yml");
 		nodeBlocks = config.getBlocks("blocks");
+		for(NodeBlock block : nodeBlocks) {
+			block.setInventory(config.getInventory("blocks." + block.getID() + ".inventory"));
+		}
+	}
+	
+	public static NodeBlock getBlockByID(int ID) {
+		for(NodeBlock block : nodeBlocks) {
+			if(block.getID() == ID) {
+				return block;
+			}
+		}
+		return null;
+	}
+	
+	public static void saveInventory(int ID, Inventory inventory) {
+		Config config = new Config(Variables.FILEPATH + "storage/blocks.yml");
+		config.setInventory("blocks." + ID + ".inventory", inventory);
 	}
 	
 	public static void storeBlock(Block block, BlockType type) {
@@ -26,11 +44,14 @@ public class BlockStorage {
 	public static void removeBlock(NodeBlock nodeBlock) {
 		Config config = new Config(Variables.FILEPATH + "storage/blocks.yml");
 		config.removeBlock("blocks", nodeBlock);
+		NodeBlock toRemove = null;
 		for(NodeBlock block : nodeBlocks) {
 			if(block.getID() == nodeBlock.getID()) {
-				nodeBlocks.remove(block);
+				toRemove = block;
 			}
 		}
+		if(toRemove != null)
+			nodeBlocks.remove(toRemove);
 	}
 	
 	private static int generateBlockID() {

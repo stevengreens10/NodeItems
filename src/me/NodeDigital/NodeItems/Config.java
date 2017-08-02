@@ -99,12 +99,14 @@ public class Config {
 	}
 	
 	public void setInventory(String path, Inventory inv) {
+		config.set(path + ".size", inv.getSize());
+		config.set(path + ".title", inv.getTitle());
 		ItemStack[] contents = inv.getContents();
 		
 		for(int i = 0; i < contents.length; i++) {
 			ItemStack item = contents[i];
 			if(item != null) {
-				setItem(path + "." + i, item);
+				setItem(path + ".contents." + i, item);
 			}
 		}
 		
@@ -116,10 +118,23 @@ public class Config {
 		save();
 	}
 
+	public Inventory getInventory(String path) {
+		int size = config.getInt(path + ".size");
+		String title = config.getString(path + ".title");
+		Inventory inventory = Bukkit.createInventory(null, size, title);
+		for(int i = 0; i < size; i++) {
+			ItemStack item = getItem(path + ".contents." + i);
+			if(item != null) {
+				inventory.setItem(i, item);
+			}
+		}
+		return inventory;
+	}
+
 	public Inventory getInventory(String path, int size, String title) {
 		Inventory inventory = Bukkit.createInventory(null, size, title);
 		for(int i = 0; i < size; i++) {
-			ItemStack item = getItem(path + "." + i);
+			ItemStack item = getItem(path + ".contents." + i);
 			if(item != null) {
 				inventory.setItem(i, item);
 			}
