@@ -3,7 +3,6 @@ package me.NodeDigital.NodeItems.block;
 import java.util.Arrays;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.Inventory;
 
@@ -86,7 +85,6 @@ public class BlockStorage {
 		}else {
 			id = 0;
 		}
-		Bukkit.broadcastMessage(""+id);
 		return id;
 	}
 	

@@ -1,5 +1,6 @@
 package me.NodeDigital.NodeItems.item;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,10 +19,17 @@ public class Backpack {
 		Config config = new Config(Variables.FILEPATH + "storage/" + p.getUniqueId().toString()+".yml");
 		int id = 0;
 		if(config.getConfig().getConfigurationSection("backpacks") != null && config.getConfig().getConfigurationSection("backpacks").getKeys(false) != null) {
-			String [] IDs = config.getConfig().getConfigurationSection("backpacks").getKeys(false).toArray(new String[0]);
+			String [] IDstr = config.getConfig().getConfigurationSection("backpacks").getKeys(false).toArray(new String[0]);
 			boolean foundID = false;
+			int[] IDs = new int[IDstr.length];
+			for(int i = 0; i < IDstr.length; i++) {
+				String s = IDstr[i];
+				IDs[i] = Integer.parseInt(s);
+			}
+			
+			Arrays.sort(IDs);
 			for(int i = 0; i < IDs.length; i++) {
-				int ID = Integer.parseInt(IDs[i]);
+				int ID = IDs[i];
 				if(ID != i) {
 					id = i;
 					foundID = true;
