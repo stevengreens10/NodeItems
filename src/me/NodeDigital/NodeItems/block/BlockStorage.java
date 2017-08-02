@@ -86,6 +86,7 @@ public class BlockStorage {
 		}else {
 			id = 0;
 		}
+		Bukkit.broadcastMessage(""+id);
 		return id;
 	}
 	
