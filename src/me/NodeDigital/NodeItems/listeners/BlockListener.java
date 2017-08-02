@@ -42,10 +42,12 @@ public class BlockListener implements Listener{
 		NodeBlock nodeBlock = BlockStorage.getNodeBlock(block);
 		if(nodeBlock != null) {
 			if(nodeBlock.getType() == BlockType.SECRET_CHEST) {
+				if(nodeBlock.hasInventory()) {
 				ItemStack[] contents = nodeBlock.getInventory().getContents();
-				for(ItemStack item : contents) {
-					if(item != null) {
-						block.getWorld().dropItemNaturally(block.getLocation(), item);
+					for(ItemStack item : contents) {
+						if(item != null) {
+							block.getWorld().dropItemNaturally(block.getLocation(), item);
+						}
 					}
 				}
 				

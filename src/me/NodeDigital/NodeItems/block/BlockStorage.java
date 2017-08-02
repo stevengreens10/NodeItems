@@ -1,7 +1,9 @@
 package me.NodeDigital.NodeItems.block;
 
+import java.util.Arrays;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.Inventory;
 
@@ -16,7 +18,10 @@ public class BlockStorage {
 		Config config = new Config(Variables.FILEPATH + "storage/blocks.yml");
 		nodeBlocks = config.getBlocks("blocks");
 		for(NodeBlock block : nodeBlocks) {
-			block.setInventory(config.getInventory("blocks." + block.getID() + ".inventory"));
+			Inventory inv = config.getInventory("blocks." + block.getID() + ".inventory");
+			if(inv != null) {
+				block.setInventory(inv);
+			}
 		}
 	}
 	
@@ -58,10 +63,17 @@ public class BlockStorage {
 		Config config = new Config(Variables.FILEPATH + "storage/blocks.yml");
 		int id = 0;
 		if(config.getConfig().getConfigurationSection("blocks") != null && config.getConfig().getConfigurationSection("blocks").getKeys(false) != null) {
-			String [] IDs = config.getConfig().getConfigurationSection("blocks").getKeys(false).toArray(new String[0]);
+			String [] IDstr = config.getConfig().getConfigurationSection("blocks").getKeys(false).toArray(new String[0]);
 			boolean foundID = false;
+			int[] IDs = new int[IDstr.length];
+			for(int i = 0; i < IDstr.length; i++) {
+				String s = IDstr[i];
+				IDs[i] = Integer.parseInt(s);
+			}
+			
+			Arrays.sort(IDs);
 			for(int i = 0; i < IDs.length; i++) {
-				int ID = Integer.parseInt(IDs[i]);
+				int ID = IDs[i];
 				if(ID != i) {
 					id = i;
 					foundID = true;
@@ -74,6 +86,7 @@ public class BlockStorage {
 		}else {
 			id = 0;
 		}
+		Bukkit.broadcastMessage(""+id);
 		return id;
 	}
 	
