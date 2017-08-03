@@ -72,7 +72,7 @@ public class BlockListener implements Listener{
 				if(nodeBlock.getType() == BlockType.SECRET_CHEST && e.getPlayer().isSneaking()) {
 					e.setCancelled(true);
 					if(nodeBlock.getInventory() == null) {
-						player.openInventory(nodeBlock.createInventory(null, 27, ChatColor.GOLD + "Secret Chest #" + nodeBlock.getID() ));
+						player.openInventory(nodeBlock.createInventory(null, 27, ChatColor.GOLD + "Secret Chest"));
 					}else {
 						player.openInventory(nodeBlock.getInventory());
 					}

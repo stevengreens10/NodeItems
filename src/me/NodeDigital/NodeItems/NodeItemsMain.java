@@ -16,6 +16,7 @@ import me.NodeDigital.NodeItems.listeners.InventoryListener;
 import me.NodeDigital.NodeItems.listeners.ItemListener;
 import me.NodeDigital.NodeItems.tasks.ArmorTasks;
 import me.NodeDigital.NodeItems.tasks.ItemTasks;
+import me.NodeDigital.NodeItems.tasks.NodeBlockTasks;
 
 public class NodeItemsMain extends JavaPlugin{
 	public void onEnable() {
@@ -32,6 +33,8 @@ public class NodeItemsMain extends JavaPlugin{
 		
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new ArmorTasks(), 0L, 10L);
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new ItemTasks(), 0L, 10L);
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new NodeBlockTasks(), 0L, 10L);
+
 
 	}
 	

@@ -101,6 +101,7 @@ public class Config {
 	public void setInventory(String path, Inventory inv) {
 		config.set(path + ".size", inv.getSize());
 		config.set(path + ".title", inv.getTitle());
+		config.set(path +".contents", "");
 		ItemStack[] contents = inv.getContents();
 		
 		for(int i = 0; i < contents.length; i++) {
